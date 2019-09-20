@@ -1,6 +1,9 @@
 body * {
     box-sizing: border-box;
 }
+body {
+    background-color: rgb(192, 233, 233);
+}
 
 .forms {
     margin: 0 auto;
@@ -10,13 +13,14 @@ body * {
 form {
     margin-top: 20px;
     border: 1px black solid;
+    height: 100px;
 }
 
 header {
     text-align: center;
 }
 
-#home-screen {
+.home-screen {
     text-align: center;
 }
 
