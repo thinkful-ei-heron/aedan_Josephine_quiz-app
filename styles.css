@@ -1,0 +1,33 @@
+body * {
+    box-sizing: border-box;
+}
+
+.forms {
+    margin: 0 auto;
+    width: 75%;
+}
+
+form {
+    margin-top: 20px;
+    border: 1px black solid;
+}
+
+header {
+    text-align: center;
+}
+
+#home-screen {
+    text-align: center;
+}
+
+.right-button {
+    text-align: right;
+}
+
+#end-screen {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}
