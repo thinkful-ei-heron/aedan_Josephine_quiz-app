@@ -20,7 +20,7 @@ header {
     text-align: center;
 }
 
-.home-screen {
+#start-quiz {
     text-align: center;
 }
 
@@ -36,6 +36,10 @@ h3 {
     text-align: center;
 }
 
-.question{
+#questions {
     color: green;
+}
+
+#answer {
+    
 }

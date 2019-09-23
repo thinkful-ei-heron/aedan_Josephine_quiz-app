@@ -80,8 +80,6 @@ function renderStartQuiz() {
   const home = getHomeScreen();
   //navigate and replace
   $('main').html(home);
-  //add homescreen class
-  toggleHome();
 }
 
 //resets question counter and correct answer counter to 0
@@ -132,37 +130,21 @@ function getQCounter(){
 }
 
 function getQuestionHtml(qNum){
-  return `
-  <form id = 'questions'>
-    <span>${STORE[qNum].question}</span> <br>
-    <label> <input type="radio" name="q" value="option1">
-    ${STORE[qNum].option1} </label><br>
-    <label> <input type="radio" name="q" value="option2">
-    ${STORE[qNum].option2} </label><br>
-    <label> <input type="radio" name="q" value="option3">
-    ${STORE[qNum].option3} </label><br>
-    <label> <input type="radio" name="q" value="option4">
-    ${STORE[qNum].option4} </label><br>
-    <div class='right-button'>
+  let option;
+  let str = `<form id = 'questions'>
+    <span>${STORE[qNum].question}</span> <br>`
+  for (let i = 1; i < 5; i++){
+    option = 'option' + i;
+    str += `<label> <input type="radio" name="q" value="${option}">
+        ${STORE[qNum][option]} </label><br>`
+  }
+
+  str += `<div class='right-button'>
         <button class='right-button submit-form'>Submit</button>
     </div>
     </form>`;
-}
 
-function toggleHome(){
-  $('#js-form').toggleClass('home-screen');
-}
-
-function toggleCorrect(){
-
-}
-
-function toggleQuestion(){
-  $('#js-form').toggleClass('question');
-}
-
-function toggleIncorrect(){
-
+  return str;
 }
 
 function updateQCount() {
@@ -176,43 +158,66 @@ function renderCorrect() {
   //get info for congratulate
   //get info for correct extra info?
   let question = getQCounter();
-  $('#js-form').html(getCorrectHtml(question));
+  $('main').html(getCorrectHtml(question));
   //replace html
 }
 
 function getCorrectHtml(qNum){
   return `
+  <form id="answer">
   <h3>Correct!</h3>
   <p> Answer: ${STORE[qNum][STORE[qNum].correctAnswer]} </p>
   <p> ${STORE[qNum].explanation} </p>
   <div class='right-button'>
           <button class='right-button' id='next-question'>Next Question -></button>
-  </div>`;
+  </div>
+  </form>`;
 }
 
 function updateCorrectCount(){
-  STORE.correctAnswer++;
+  STORE.correctCounter++;
 }
 
 function renderIncorrect() {
   //get info for incorrect
+  renderCounter();
   //get info for correct answer 
+  let question = getQCounter();
+  $('main').html(getIncorrectHtml(question));
   //explain
   //replace html
 }
 
+function getIncorrectHtml(qNum){
+  return `
+  <form id="answer">
+  <h3>Incorrect!</h3>
+  <p> Answer: ${STORE[qNum][STORE[qNum].correctAnswer]} </p>
+  <p> ${STORE[qNum].explanation} </p>
+  <div class='right-button'>
+          <button class='right-button' id='next-question'>Next Question -></button>
+  </div>
+  </form>`;
+}
+
 function renderEnd() {
   //get info for %correct from qcounter and incorCounter
+  $('main').html(getEndHtml());
   //ask if want to play again
   //replace html
+}
+
+function getEndHtml(){
+  return `<form action="" id='end-screen'>
+    <p>This is your score: ${STORE.correctCounter}/5</p>
+    <button class='start-quiz'>Restart?</button>
+    </form>`;
 }
 
 function handleStart() {
   //listen to start/reset buttons through form
   $('main').on('submit', '#start-quiz', e => {
     e.preventDefault();
-    toggleHome();
-    toggleQuestion();
     renderQuestion();
   });
 }
@@ -242,7 +247,15 @@ function getCorrectAnswer(){
 }
 
 function handleNext() {
-  //listen to next button through form
+  //listen to next button through main
+  $('main').on('submit', '#answer', e => {
+    e.preventDefault();
+    if (STORE.qCounter < 5){
+      renderQuestion();
+    } else {
+      renderEnd();
+    }
+  });
   //renderquestion()
 }
 
