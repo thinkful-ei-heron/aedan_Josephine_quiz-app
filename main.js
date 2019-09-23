@@ -196,7 +196,9 @@ function getEndHtml(){
   return `
   <form id="end-screen">
     <img src="images/space_2.jpg" alt="A picture of the sun coming around the edge of the earth taken from space.">
+    <h3>Thanks for taking this quiz!</h3>
     <p>This is your score: ${STORE.correctCounter}/5</p>
+    <p>Hope you learned something new :)</p>
     <button id = 'restart-quiz'>Restart the quiz?</button>
   </form>`;
 }
