@@ -1,7 +1,7 @@
 'use strict';
 
 const STORE = {
-  //q1
+  
   q1: {
     question: 'What is an event horizon?',
     option1: 'A movie starring Laurence Fishburne and Brad Pitt.',
@@ -11,16 +11,10 @@ const STORE = {
     correctAnswer: 'option2',
     explanation: `In astrophysics, an event horizon is a boundary beyond which events cannot affect an observer on the opposite side of it. An event horizon is 
             most commonly associated with black holes, where gravitational forces are so strong that light cannot escape.`,
-
+    image: 'images/blackhole.jpg',
+    imageAlt: 'A picture of a blackhole.'
   },
-  //Question: str
-  //answer1: str
-  //answer2: str
-  //answer3: str
-  //answer4: str 
-  //correct answer: number
-  //question image: img
-  //q2
+
   q2: {
     question: 'Why do stars twinkle?',
     option1: 'Twinkle Twinkle Little Star.',
@@ -30,9 +24,10 @@ const STORE = {
     correctAnswer: 'option3',
     // eslint-disable-next-line quotes
     explanation: `As the atmosphere churns, the light from the star is refracted in different directions. This causes the star's image to change slightly in brightness and position, hence "twinkle."`,
-
+    image: 'images/space_1.jpg',
+    imageAlt: 'An image of the galaxy.'
   },
-  //q3
+  
   q3: {
     question: 'What is the second nearest star to Earth?',
     option1: 'The sun.',
@@ -42,9 +37,10 @@ const STORE = {
     correctAnswer: 'option3',
     explanation: `The closest star to Earth are three stars in the Alpha Centauri system. The two main stars are Alpha Centauri A and Alpha Centauri B, which form a binary pair. They are 
             an average of 4.3 light-years from Earth. The third star is Proxima Centauri. It is about 4.22 light-years from Earth and is the closest star other than the sun.`,
-
+    image: 'images/alphaCenturi.jpg',
+    imageAlt: 'An image of Alpah Centauri.'
   },
-  //q4
+  
   q4: {
     question: 'What is the fastest a neutron star has been recorded to spin per second?',
     option1: '.005 Hz',
@@ -54,9 +50,10 @@ const STORE = {
     correctAnswer: 'option3',
     explanation: `Some neutron stars have jets of materials streaming out of them at nearly the speed of light. As these beams pan past Earth, they flash like the bulb of a lighthouse. Scientists called them pulsars after their pulsing appearance. 
             Normal pulsars spin between 0.1 and 60 times per second, while millisecond pulsars can result as much as 700 times per second.`,
-
+    image: 'images/neutron-star.png',
+    imageAlt: 'An image of a neutron star.'
   },
-  //q5
+  
   q5: {
     question: 'How much does a full nasa space suit cost?',
     option1: '12 million dollars.',
@@ -66,204 +63,230 @@ const STORE = {
     correctAnswer: 'option1',
     // eslint-disable-next-line quotes
     explanation: `The cost of a spacesuit originally was about $22 million. Building one from scratch right now can be as much as 250 million due to lack of parts.`,
-
+    image: 'images/space_3.jpg',
+    imageAlt: 'An image of an astronaught in space.'
   },
   qCounter: 0,
   correctCounter: 0
 };
 
-//loads and sets up starting welcome page
+
+//-------------------------------------------------------------------------------------
+//render functions
+
+
 function renderStartQuiz() {
   restart();
   renderCounter();
-  //get main page info
-  const home = getHomeScreen();
-  //navigate and replace
+
+  const home = getHomeScreenHtml();
   $('main').html(home);
 }
 
-//resets question counter and correct answer counter to 0
-function restart() {
-  //initialize counters to 0
-  STORE.qCounter = 0;
-  STORE.correctCounter = 0; 
-  //reset the classes on js-form
-}
-
-//
 function renderCounter () {
-  //get info from qcounter and incorCounter
   let q = STORE.qCounter;
   let corr = STORE.correctCounter;
-  //replace html
+
   const counterHtml = getCounterHtml(q, corr);
   $('#js-counters').html(counterHtml);
 }
 
-function getCounterHtml(q, corr) {
-  return `
-  
-  <span>Current Question: ${q}/5</span>
-      <span>Current Score: ${corr}</span>`;
-}
-
-function getHomeScreen() {
-  return `
-  <form id = 'start-quiz'>
-  <h2>Welcome!</h2>
-    <button class='start-quiz'>Start Quiz</button>
-    </form>`;
-}
-
 function renderQuestion() {
-  //update question counter
   updateQCount();
   renderCounter();
-  //get the html in string for that question
-  let question = getQCounter();
-  //replace html in form
-  $('main').html(getQuestionHtml(question));
+  
+  let question = getQCounterString();
+  let questionHtml = getQuestionHtml(question);
+  $('main').html(questionHtml);
 }
 
-function getQCounter(){
-  return `q${STORE.qCounter}`;
+function renderCorrect() {
+  updateCorrectCount();
+  renderCounter();
+ 
+  let question = getQCounterString();
+  let correctHtml = getCorrectHtml(question);
+  $('main').html(correctHtml);
+}
+
+function renderIncorrect() {
+  renderCounter();
+  
+  let question = getQCounterString();
+  let incorrectHtml = getIncorrectHtml(question);
+  $('main').html(incorrectHtml);
+}
+
+function renderEnd() {
+  let endHtml = getEndHtml();
+  $('main').html(endHtml);
+}
+
+
+//---------------------------------------------------------------------------
+//get HTML functions
+
+
+function getHomeScreenHtml() {
+  return `
+  <form id = 'start-quiz'>
+    <h2>Welcome!</h2>
+    <img id = 'welcome-image' src="images/space_4.jpg" alt="A picture of a bunch of planets revoving around a star.">
+    <button class='start-quiz'>Start Quiz</button>
+  </form>`;
+}
+
+function getCounterHtml(q, corr) {
+  return `<span>Current Question: ${q}/5</span>
+      <span>Current Score: ${corr}</span>`;
 }
 
 function getQuestionHtml(qNum){
   let option;
-  let str = `<form id = 'questions'>
-    <span>${STORE[qNum].question}</span> <br>`
+  let str = `
+  <form id = 'questions'>
+    <span>${STORE[qNum].question}</span><br><br>`;
+
   for (let i = 1; i < 5; i++){
     option = 'option' + i;
-    str += `<label> <input type="radio" name="q" value="${option}">
-        ${STORE[qNum][option]} </label><br>`
+    str += `
+    <label> 
+      <input type="radio" name="q" value="${option}">${STORE[qNum][option]} 
+    </label><br><br>`; //adds this html string to end of str
   }
 
-  str += `<div class='right-button'>
+  str += `
+      <div class='right-button'>
         <button class='right-button submit-form'>Submit</button>
-    </div>
-    </form>`;
+      </div>
+    </form>`;//closes off the str html string.
 
   return str;
-}
-
-function updateQCount() {
-  STORE.qCounter++;
-}
-
-function renderCorrect() {
-  //correctAnswer++
-  updateCorrectCount();
-  renderCounter();
-  //get info for congratulate
-  //get info for correct extra info?
-  let question = getQCounter();
-  $('main').html(getCorrectHtml(question));
-  //replace html
 }
 
 function getCorrectHtml(qNum){
   return `
   <form id="answer">
-  <h3>Correct!</h3>
-  <p> Answer: ${STORE[qNum][STORE[qNum].correctAnswer]} </p>
-  <p> ${STORE[qNum].explanation} </p>
-  <div class='right-button'>
-          <button class='right-button' id='next-question'>Next Question -></button>
-  </div>
+    <img src="${STORE[qNum].image}" alt="${STORE[qNum].imageAlt}">
+    <h3>Correct!</h3>
+    <p> Answer: ${STORE[qNum][STORE[qNum].correctAnswer]} </p>
+    <p> ${STORE[qNum].explanation} </p>
+    <div class='right-button'>
+            <button class='right-button' id='next-question'>Next Question -></button>
+    </div>
   </form>`;
+}
+
+function getIncorrectHtml(qNum){
+  return `
+  <form id="answer">
+    <img src="${STORE[qNum].image}" alt="${STORE[qNum].imageAlt}">
+    <h3>Incorrect!</h3>
+    <p> Answer: ${STORE[qNum][STORE[qNum].correctAnswer]} </p>
+    <p> ${STORE[qNum].explanation} </p>
+    <div class='right-button'>
+            <button class='right-button' id='next-question'>Next Question -></button>
+    </div>
+  </form>`;
+}
+
+function getEndHtml(){
+  return `
+  <form id="end-screen">
+    <img src="images/space_2.jpg" alt="A picture of the sun coming around the edge of the earth taken from space.">
+    <p>This is your score: ${STORE.correctCounter}/5</p>
+    <button id = 'restart-quiz'>Restart the quiz?</button>
+  </form>`;
+}
+
+
+//---------------------------------------------------------------------
+//utility Functions
+
+
+function updateQCount() {
+  STORE.qCounter++;
 }
 
 function updateCorrectCount(){
   STORE.correctCounter++;
 }
 
-function renderIncorrect() {
-  //get info for incorrect
-  renderCounter();
-  //get info for correct answer 
-  let question = getQCounter();
-  $('main').html(getIncorrectHtml(question));
-  //explain
-  //replace html
+function getQCounterString(){
+  return `q${STORE.qCounter}`;
 }
 
-function getIncorrectHtml(qNum){
-  return `
-  <form id="answer">
-  <h3>Incorrect!</h3>
-  <p> Answer: ${STORE[qNum][STORE[qNum].correctAnswer]} </p>
-  <p> ${STORE[qNum].explanation} </p>
-  <div class='right-button'>
-          <button class='right-button' id='next-question'>Next Question -></button>
-  </div>
-  </form>`;
+function getCorrectAnswer(){
+  let current = getQCounterString();
+  return STORE[current].correctAnswer;
 }
 
-function renderEnd() {
-  //get info for %correct from qcounter and incorCounter
-  $('main').html(getEndHtml());
-  //ask if want to play again
-  //replace html
+function restart() {
+  STORE.qCounter = 0;
+  STORE.correctCounter = 0; 
 }
 
-function getEndHtml(){
-  return `<form action="" id='end-screen'>
-    <p>This is your score: ${STORE.correctCounter}/5</p>
-    <button class='start-quiz'>Restart?</button>
-    </form>`;
-}
+
+//----------------------------------------------------------------------------
+//event handling listener functions
+
 
 function handleStart() {
-  //listen to start/reset buttons through form
   $('main').on('submit', '#start-quiz', e => {
     e.preventDefault();
+
     renderQuestion();
   });
 }
 
 function handleSubmit() {
-  //listen to submit buttons through form
   $('main').on('submit', '#questions', e => {
     e.preventDefault();
 
-    let choice = $(`input[name="q"]:checked`).val();
-    console.log(choice);
-
+    let choice = $('input[name="q"]:checked').val();
     let correctAnswer = getCorrectAnswer();
-    if (choice === correctAnswer){
-      renderCorrect();
-    } else {
-      renderIncorrect();
-    }
-  });
-  //is answer true?
-  //if so rendercorrect() 
-  //else update incorrect counter and renderincorrect()
-}
 
-function getCorrectAnswer(){
-  return STORE[getQCounter()].correctAnswer;
+    if(choice !== undefined) {
+      if (choice === correctAnswer){
+        renderCorrect();
+      } else {
+        renderIncorrect();
+      }
+    } else alert('Please choose an answer.');
+  });
 }
 
 function handleNext() {
-  //listen to next button through main
   $('main').on('submit', '#answer', e => {
     e.preventDefault();
+
     if (STORE.qCounter < 5){
       renderQuestion();
     } else {
       renderEnd();
     }
   });
-  //renderquestion()
 }
+
+function handleRestart() {
+  $('main').on('submit', '#end-screen', e => {
+    e.preventDefault();
+
+    renderStartQuiz();
+  });
+}
+
+
+//------------------------------------------------------------
+//main Function
+
 
 function main() {
   renderStartQuiz();
   handleStart();
   handleSubmit();
   handleNext();
+  handleRestart();
 }
 
 $(main);

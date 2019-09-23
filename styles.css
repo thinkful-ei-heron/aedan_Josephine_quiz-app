@@ -1,11 +1,13 @@
 body * {
     box-sizing: border-box;
 }
+
 body {
-    background-color: rgb(192, 233, 233);
+    background-image: url('images/space-wallpaper.jpg');
+    background-position: center;
 }
 
-.forms {
+main {
     margin: 0 auto;
     width: 75%;
 }
@@ -13,14 +15,24 @@ body {
 form {
     margin-top: 20px;
     border: 1px black solid;
-    height: 100px;
+    padding: 20px;
+    background-color: white;
+}
+
+img {
+    width: 100%;
 }
 
 header {
     text-align: center;
+    color:white;
 }
 
-#start-quiz {
+h2 {
+    margin-top: 0;
+}
+
+h3 {
     text-align: center;
 }
 
@@ -28,18 +40,39 @@ header {
     text-align: right;
 }
 
+#start-quiz {
+    text-align: center;
+}
+
+#welcome-image {
+    margin-bottom: 20px;
+}
+
 #end-screen {
     text-align: center;
 }
 
-h3 {
-    text-align: center;
-}
-
 #questions {
-    color: green;
+ 
 }
 
 #answer {
     
+}
+
+
+@media only screen and (min-width: 504px) {
+    img {
+        max-height: 400px;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (min-width: 1080px) {
+    body {
+        padding-top: 50px;
+    }
+    main {
+        width: 50%;
+    }
 }
