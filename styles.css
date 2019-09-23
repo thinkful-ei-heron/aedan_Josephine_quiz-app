@@ -3,8 +3,11 @@ body * {
 }
 
 body {
-    background-image: url('images/space-wallpaper.jpg');
-    background-position: center;
+    background: url('images/space-wallpaper.jpg') center fixed;
+   
+    background-size: cover;                   
+    
+    
 }
 
 main {
@@ -17,15 +20,17 @@ form {
     border: 1px black solid;
     padding: 20px;
     background-color: white;
+    border: 7px solid rgb(226, 170, 66);
 }
 
 img {
     width: 100%;
+    border: 3px solid rgb(75, 6, 75);
 }
 
 header {
     text-align: center;
-    color:white;
+    color:rgb(244, 237, 250);
 }
 
 h2 {
@@ -52,14 +57,17 @@ h3 {
     text-align: center;
 }
 
-#questions {
- 
+button {
+    height: 40px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    color: black;
 }
 
-#answer {
-    
+button:hover {
+    color: white;
+    background-color: rgb(45, 81, 241);
 }
-
 
 @media only screen and (min-width: 504px) {
     img {

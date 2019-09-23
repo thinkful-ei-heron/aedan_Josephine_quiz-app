@@ -67,7 +67,8 @@ const STORE = {
     imageAlt: 'An image of an astronaught in space.'
   },
   qCounter: 0,
-  correctCounter: 0
+  correctCounter: 0,
+  incorrectAnswer: ""
 };
 
 
@@ -111,9 +112,9 @@ function renderCorrect() {
 
 function renderIncorrect() {
   renderCounter();
-  
+
   let question = getQCounterString();
-  let incorrectHtml = getIncorrectHtml(question);
+  let incorrectHtml = getIncorrectHtml(question, STORE.incorrectAnswer);
   $('main').html(incorrectHtml);
 }
 
@@ -169,21 +170,22 @@ function getCorrectHtml(qNum){
   <form id="answer">
     <img src="${STORE[qNum].image}" alt="${STORE[qNum].imageAlt}">
     <h3>Correct!</h3>
-    <p> Answer: ${STORE[qNum][STORE[qNum].correctAnswer]} </p>
-    <p> ${STORE[qNum].explanation} </p>
+    <p>Your answer: ${STORE[qNum][STORE[qNum].correctAnswer]}</p>
+    <p>${STORE[qNum].explanation}</p>
     <div class='right-button'>
             <button class='right-button' id='next-question'>Next Question -></button>
     </div>
   </form>`;
 }
 
-function getIncorrectHtml(qNum){
+function getIncorrectHtml(qNum, theirAnswer){
   return `
   <form id="answer">
     <img src="${STORE[qNum].image}" alt="${STORE[qNum].imageAlt}">
     <h3>Incorrect!</h3>
-    <p> Answer: ${STORE[qNum][STORE[qNum].correctAnswer]} </p>
-    <p> ${STORE[qNum].explanation} </p>
+    <p>Your answer: ${theirAnswer}</p>
+    <p>Correct answer: ${STORE[qNum][STORE[qNum].correctAnswer]}</p>
+    <p>${STORE[qNum].explanation}</p>
     <div class='right-button'>
             <button class='right-button' id='next-question'>Next Question -></button>
     </div>
@@ -224,6 +226,7 @@ function getCorrectAnswer(){
 function restart() {
   STORE.qCounter = 0;
   STORE.correctCounter = 0; 
+  STORE.incorrectAnswer = '';
 }
 
 
@@ -245,11 +248,13 @@ function handleSubmit() {
 
     let choice = $('input[name="q"]:checked').val();
     let correctAnswer = getCorrectAnswer();
+    let currentQuestion = getQCounterString();
 
     if(choice !== undefined) {
       if (choice === correctAnswer){
         renderCorrect();
       } else {
+        STORE.incorrectAnswer = STORE[currentQuestion][choice];
         renderIncorrect();
       }
     } else alert('Please choose an answer.');
