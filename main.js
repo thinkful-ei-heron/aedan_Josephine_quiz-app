@@ -79,7 +79,7 @@ function renderStartQuiz() {
   //get main page info
   const home = getHomeScreen();
   //navigate and replace
-  $('#js-form').html(home);
+  $('main').html(home);
   //add homescreen class
   toggleHome();
 }
@@ -103,13 +103,18 @@ function renderCounter () {
 }
 
 function getCounterHtml(q, corr) {
-  return `<span>Current Question: ${q}/5</span>
+  return `
+  
+  <span>Current Question: ${q}/5</span>
       <span>Current Score: ${corr}</span>`;
 }
 
 function getHomeScreen() {
-  return `<h2>Welcome!</h2>
-    <button class='start-quiz'>Start Quiz</button>`;
+  return `
+  <form id = 'start-quiz'>
+  <h2>Welcome!</h2>
+    <button class='start-quiz'>Start Quiz</button>
+    </form>`;
 }
 
 function renderQuestion() {
@@ -119,7 +124,7 @@ function renderQuestion() {
   //get the html in string for that question
   let question = getQCounter();
   //replace html in form
-  $('#js-form').html(getQuestionHtml(question));
+  $('main').html(getQuestionHtml(question));
 }
 
 function getQCounter(){
@@ -128,6 +133,7 @@ function getQCounter(){
 
 function getQuestionHtml(qNum){
   return `
+  <form id = 'questions'>
     <span>${STORE[qNum].question}</span> <br>
     <label> <input type="radio" name="q" value="option1">
     ${STORE[qNum].option1} </label><br>
@@ -139,7 +145,8 @@ function getQuestionHtml(qNum){
     ${STORE[qNum].option4} </label><br>
     <div class='right-button'>
         <button class='right-button submit-form'>Submit</button>
-    </div>`;
+    </div>
+    </form>`;
 }
 
 function toggleHome(){
@@ -202,7 +209,7 @@ function renderEnd() {
 
 function handleStart() {
   //listen to start/reset buttons through form
-  $('#js-form').submit('.start-quiz', e => {
+  $('main').on('submit', '#start-quiz', e => {
     e.preventDefault();
     toggleHome();
     toggleQuestion();
@@ -212,7 +219,7 @@ function handleStart() {
 
 function handleSubmit() {
   //listen to submit buttons through form
-  $('#js-form').submit('.submit-form', e => {
+  $('main').on('submit', '#questions', e => {
     e.preventDefault();
 
     let choice = $(`input[name="q"]:checked`).val();
